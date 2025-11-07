@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - AAR Management System</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Top Classification Banner -->
+    <div class="classification-banner classification-unclassified">
+        UNCLASSIFIED // FOR OFFICIAL USE ONLY (FOUO)
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-logo">
+                <span class="logo-text">⬢ AAR MANAGEMENT SYSTEM</span>
+            </div>
+            <nav class="header-nav">
+                <a href="/" class="nav-link">Dashboard</a>
+                <a href="/aar/create" class="nav-link">Create AAR</a>
+                <a href="/aar/list" class="nav-link">Browse AARs</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {{template "content" .}}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>AAR Management System v1.0 | NIPR</p>
+                <p>Distribution: Authorized to U.S. Government Agencies Only</p>
+                <p class="disclaimer">This is a demonstration system. No classified information should be stored.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Classification Banner -->
+    <div class="classification-banner classification-unclassified">
+        UNCLASSIFIED // FOR OFFICIAL USE ONLY (FOUO)
+    </div>
+</body>
+</html>

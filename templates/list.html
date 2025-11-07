@@ -1,0 +1,90 @@
+{{define "content"}}
+<div class="list-aar">
+    <h1 class="page-title">Browse After Action Reports</h1>
+
+    <!-- Search/Filter Form -->
+    <div class="search-section">
+        <form method="GET" action="/aar/list" class="search-form">
+            <div class="search-row">
+                <div class="search-field">
+                    <label for="operation_name">Operation Name</label>
+                    <input type="text" id="operation_name" name="operation_name"
+                           value="{{.SearchParams.OperationName}}"
+                           placeholder="Search by operation name...">
+                </div>
+
+                <div class="search-field">
+                    <label for="unit">Unit Designation</label>
+                    <input type="text" id="unit" name="unit"
+                           value="{{.SearchParams.Unit}}"
+                           placeholder="Search by unit...">
+                </div>
+
+                <div class="search-field">
+                    <label for="mission_type">Mission Type</label>
+                    <select id="mission_type" name="mission_type">
+                        <option value="">All Types</option>
+                        <option value="Training Exercise" {{if eq .SearchParams.MissionType "Training Exercise"}}selected{{end}}>Training Exercise</option>
+                        <option value="Combat Operations" {{if eq .SearchParams.MissionType "Combat Operations"}}selected{{end}}>Combat Operations</option>
+                        <option value="Humanitarian Assistance" {{if eq .SearchParams.MissionType "Humanitarian Assistance"}}selected{{end}}>Humanitarian Assistance</option>
+                        <option value="Security Cooperation" {{if eq .SearchParams.MissionType "Security Cooperation"}}selected{{end}}>Security Cooperation</option>
+                        <option value="Other" {{if eq .SearchParams.MissionType "Other"}}selected{{end}}>Other</option>
+                    </select>
+                </div>
+
+                <div class="search-actions">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <a href="/aar/list" class="btn btn-secondary">Clear</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Results Count -->
+    <div class="results-info">
+        <p>Found <strong>{{len .AARs}}</strong> After Action Report(s)</p>
+    </div>
+
+    <!-- AARs Table -->
+    <div class="table-container">
+        <table class="aar-table">
+            <thead>
+                <tr>
+                    <th>AAR ID</th>
+                    <th>Operation Name</th>
+                    <th>DTG</th>
+                    <th>Unit</th>
+                    <th>Mission Type</th>
+                    <th>Status</th>
+                    <th>Docs</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{if .AARs}}
+                    {{range .AARs}}
+                    <tr class="table-row" onclick="window.location='/aar/view?id={{.ID}}'">
+                        <td class="aar-id-cell">{{.ID}}</td>
+                        <td class="operation-name-cell">{{.OperationName}}</td>
+                        <td>{{.DTG}}</td>
+                        <td>{{.UnitDesignation}}</td>
+                        <td>{{.MissionType}}</td>
+                        <td><span class="status-badge status-{{.Status}}">{{.Status}}</span></td>
+                        <td class="text-center">{{len .Attachments}}</td>
+                        <td onclick="event.stopPropagation()">
+                            <a href="/aar/view?id={{.ID}}" class="btn btn-small">View</a>
+                        </td>
+                    </tr>
+                    {{end}}
+                {{else}}
+                    <tr>
+                        <td colspan="8" class="text-center empty-message">
+                            No After Action Reports found. <a href="/aar/create">Create your first AAR</a>
+                        </td>
+                    </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{end}}

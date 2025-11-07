@@ -1,0 +1,188 @@
+{{define "content"}}
+<div class="create-aar">
+    <h1 class="page-title">Create After Action Report</h1>
+
+    {{if .Error}}
+    <div class="alert alert-error">
+        {{.Error}}
+    </div>
+    {{end}}
+
+    {{if .Success}}
+    <div class="alert alert-success">
+        AAR created successfully! <a href="/aar/view?id={{.AARID}}">View AAR {{.AARID}}</a>
+    </div>
+    {{end}}
+
+    <form method="POST" action="/aar/create" enctype="multipart/form-data" class="aar-form">
+        <!-- Identification & Classification -->
+        <section class="form-section">
+            <h2>Identification & Classification</h2>
+
+            <div class="form-group">
+                <label for="classification">Classification Level *</label>
+                <select id="classification" name="classification" required>
+                    <option value="UNCLASSIFIED" selected>UNCLASSIFIED</option>
+                    <option value="CUI">CUI (Controlled Unclassified Information)</option>
+                    <option value="CONFIDENTIAL">CONFIDENTIAL</option>
+                    <option value="SECRET">SECRET</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="operation_name">Operation Name *</label>
+                <input type="text" id="operation_name" name="operation_name" required
+                       placeholder="e.g., Operation Steel Guardian">
+            </div>
+
+            <div class="form-group">
+                <label for="dtg">Date-Time Group (DTG) *</label>
+                <input type="text" id="dtg" name="dtg" required
+                       placeholder="e.g., 071430ZNOV25" pattern="[0-9]{6}Z[A-Z]{3}[0-9]{2}">
+                <small>Format: DDHHMMZMONTHYY (e.g., 071430ZNOV25)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="unit_designation">Unit Designation *</label>
+                <input type="text" id="unit_designation" name="unit_designation" required
+                       placeholder="e.g., 1st Battalion, 75th Ranger Regiment">
+            </div>
+        </section>
+
+        <!-- Operational Details -->
+        <section class="form-section">
+            <h2>Operational Details</h2>
+
+            <div class="form-group">
+                <label for="mission_type">Mission Type *</label>
+                <select id="mission_type" name="mission_type" required>
+                    <option value="">Select Mission Type</option>
+                    <option value="Training Exercise">Training Exercise</option>
+                    <option value="Combat Operations">Combat Operations</option>
+                    <option value="Humanitarian Assistance">Humanitarian Assistance</option>
+                    <option value="Security Cooperation">Security Cooperation</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location / Area of Operations (AO) *</label>
+                <input type="text" id="location" name="location" required
+                       placeholder="e.g., Fort Stewart, GA">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="duration_start">Duration Start (DTG) *</label>
+                    <input type="text" id="duration_start" name="duration_start" required
+                           placeholder="e.g., 070600ZNOV25">
+                </div>
+
+                <div class="form-group">
+                    <label for="duration_end">Duration End (DTG) *</label>
+                    <input type="text" id="duration_end" name="duration_end" required
+                           placeholder="e.g., 071800ZNOV25">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="personnel_count">Personnel Count</label>
+                <input type="number" id="personnel_count" name="personnel_count" min="0"
+                       placeholder="e.g., 450">
+            </div>
+        </section>
+
+        <!-- AAR Content -->
+        <section class="form-section">
+            <h2>AAR Content</h2>
+
+            <div class="form-group">
+                <label for="executive_summary">Executive Summary *</label>
+                <textarea id="executive_summary" name="executive_summary" rows="4" required
+                          placeholder="Brief overview of the operation..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="key_events">Key Events *</label>
+                <textarea id="key_events" name="key_events" rows="6" required
+                          placeholder="Chronological listing of significant events..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="what_went_well">What Went Well *</label>
+                <textarea id="what_went_well" name="what_went_well" rows="4" required
+                          placeholder="Successes and positive outcomes..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="needs_improvement">Needs Improvement *</label>
+                <textarea id="needs_improvement" name="needs_improvement" rows="4" required
+                          placeholder="Areas requiring improvement..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="lessons_learned">Lessons Learned *</label>
+                <textarea id="lessons_learned" name="lessons_learned" rows="4" required
+                          placeholder="Key takeaways from the operation..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="recommendations">Recommendations *</label>
+                <textarea id="recommendations" name="recommendations" rows="4" required
+                          placeholder="Recommendations for future operations..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="commanders_assessment">Commander's Assessment</label>
+                <textarea id="commanders_assessment" name="commanders_assessment" rows="3"
+                          placeholder="Optional commander's input..."></textarea>
+            </div>
+        </section>
+
+        <!-- Administrative -->
+        <section class="form-section">
+            <h2>Administrative</h2>
+
+            <div class="form-group">
+                <label for="prepared_by">Prepared By *</label>
+                <input type="text" id="prepared_by" name="prepared_by" required
+                       placeholder="e.g., CPT John Smith, S3 Operations Officer">
+            </div>
+
+            <div class="form-group">
+                <label for="reviewed_by">Reviewed By</label>
+                <input type="text" id="reviewed_by" name="reviewed_by"
+                       placeholder="e.g., LTC Michael Johnson, Battalion Commander">
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status *</label>
+                <select id="status" name="status" required>
+                    <option value="Draft">Draft</option>
+                    <option value="Submitted" selected>Submitted</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Approved">Approved</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Attachments -->
+        <section class="form-section">
+            <h2>Attachments</h2>
+
+            <div class="form-group">
+                <label for="attachments">Upload Supporting Documents</label>
+                <input type="file" id="attachments" name="attachments" multiple
+                       accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.mp4,.avi">
+                <small>Supported formats: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG, MP4, AVI</small>
+            </div>
+        </section>
+
+        <!-- Submit -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Submit AAR</button>
+            <a href="/" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{{end}}

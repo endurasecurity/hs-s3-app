@@ -1,0 +1,77 @@
+{{define "content"}}
+<div class="dashboard">
+    <h1 class="page-title">After Action Report Management System</h1>
+
+    <!-- Statistics Cards -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-number">{{.Stats.total}}</div>
+            <div class="stat-label">Total AARs</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">{{index .Stats.by_status "Approved"}}</div>
+            <div class="stat-label">Approved</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">{{index .Stats.by_status "Submitted"}}</div>
+            <div class="stat-label">Submitted</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">{{index .Stats.by_mission_type "Training Exercise"}}</div>
+            <div class="stat-label">Training Exercises</div>
+        </div>
+    </div>
+
+    <!-- Mission Type Breakdown -->
+    <div class="section">
+        <h2>AARs by Mission Type</h2>
+        <div class="mission-breakdown">
+            {{range $type, $count := .Stats.by_mission_type}}
+            <div class="mission-item">
+                <span class="mission-type">{{$type}}</span>
+                <span class="mission-count">{{$count}}</span>
+            </div>
+            {{end}}
+        </div>
+    </div>
+
+    <!-- Recent AARs -->
+    <div class="section">
+        <h2>Recent After Action Reports</h2>
+        <div class="recent-aars">
+            {{range .RecentAARs}}
+            <div class="aar-card">
+                <div class="aar-card-header">
+                    <span class="aar-id">{{.ID}}</span>
+                    <span class="aar-status status-{{.Status}}">{{.Status}}</span>
+                </div>
+                <div class="aar-card-body">
+                    <h3>{{.OperationName}}</h3>
+                    <div class="aar-meta">
+                        <span><strong>Unit:</strong> {{.UnitDesignation}}</span>
+                        <span><strong>DTG:</strong> {{.DTG}}</span>
+                        <span><strong>Type:</strong> {{.MissionType}}</span>
+                        <span><strong>Attachments:</strong> {{len .Attachments}}</span>
+                    </div>
+                </div>
+                <div class="aar-card-footer">
+                    <a href="/aar/view?id={{.ID}}" class="btn btn-secondary">View Details</a>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section">
+        <h2>Quick Actions</h2>
+        <div class="quick-actions">
+            <a href="/aar/create" class="btn btn-primary">Create New AAR</a>
+            <a href="/aar/list" class="btn btn-secondary">Browse All AARs</a>
+        </div>
+    </div>
+</div>
+{{end}}

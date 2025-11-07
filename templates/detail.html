@@ -1,0 +1,203 @@
+{{define "content"}}
+<div class="detail-aar">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="/">Home</a> &gt; <a href="/aar/list">AARs</a> &gt; {{.AAR.ID}}
+    </div>
+
+    <!-- Header with Actions -->
+    <div class="detail-header">
+        <h1 class="page-title">{{.AAR.OperationName}}</h1>
+        <div class="detail-actions">
+            <form method="POST" action="/aar/generate-report" style="display: inline;">
+                <input type="hidden" name="aar_id" value="{{.AAR.ID}}">
+                <button type="submit" class="btn btn-primary">Generate PDF Report</button>
+            </form>
+            <a href="/aar/list" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+
+    <!-- AAR Details in Two Columns -->
+    <div class="detail-container">
+        <!-- Left Column: Metadata and Content -->
+        <div class="detail-main">
+            <!-- Identification Section -->
+            <section class="detail-section">
+                <h2>Identification & Classification</h2>
+                <div class="detail-grid">
+                    <div class="detail-field">
+                        <label>AAR ID</label>
+                        <div class="detail-value">{{.AAR.ID}}</div>
+                    </div>
+                    <div class="detail-field">
+                        <label>Classification</label>
+                        <div class="detail-value classification-badge">{{.AAR.Classification}}</div>
+                    </div>
+                    <div class="detail-field">
+                        <label>Date-Time Group (DTG)</label>
+                        <div class="detail-value">{{.AAR.DTG}}</div>
+                    </div>
+                    <div class="detail-field">
+                        <label>Status</label>
+                        <div class="detail-value"><span class="status-badge status-{{.AAR.Status}}">{{.AAR.Status}}</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Operational Details -->
+            <section class="detail-section">
+                <h2>Operational Details</h2>
+                <div class="detail-grid">
+                    <div class="detail-field">
+                        <label>Unit Designation</label>
+                        <div class="detail-value">{{.AAR.UnitDesignation}}</div>
+                    </div>
+                    <div class="detail-field">
+                        <label>Mission Type</label>
+                        <div class="detail-value">{{.AAR.MissionType}}</div>
+                    </div>
+                    <div class="detail-field">
+                        <label>Location / AO</label>
+                        <div class="detail-value">{{.AAR.Location}}</div>
+                    </div>
+                    <div class="detail-field">
+                        <label>Personnel Count</label>
+                        <div class="detail-value">{{.AAR.PersonnelCount}}</div>
+                    </div>
+                    <div class="detail-field">
+                        <label>Duration Start</label>
+                        <div class="detail-value">{{.AAR.DurationStart}}</div>
+                    </div>
+                    <div class="detail-field">
+                        <label>Duration End</label>
+                        <div class="detail-value">{{.AAR.DurationEnd}}</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Executive Summary -->
+            <section class="detail-section">
+                <h2>Executive Summary</h2>
+                <div class="detail-text">{{.AAR.ExecutiveSummary}}</div>
+            </section>
+
+            <!-- Tabbed Content -->
+            <section class="detail-section">
+                <div class="tabs">
+                    <button class="tab-button active" onclick="showTab('key-events')">Key Events</button>
+                    <button class="tab-button" onclick="showTab('analysis')">Analysis</button>
+                    <button class="tab-button" onclick="showTab('recommendations')">Recommendations</button>
+                </div>
+
+                <div id="key-events" class="tab-content active">
+                    <h3>Key Events</h3>
+                    <div class="detail-text">{{.AAR.KeyEvents}}</div>
+                </div>
+
+                <div id="analysis" class="tab-content">
+                    <h3>What Went Well</h3>
+                    <div class="detail-text">{{.AAR.WhatWentWell}}</div>
+
+                    <h3>Needs Improvement</h3>
+                    <div class="detail-text">{{.AAR.NeedsImprovement}}</div>
+
+                    <h3>Lessons Learned</h3>
+                    <div class="detail-text">{{.AAR.LessonsLearned}}</div>
+                </div>
+
+                <div id="recommendations" class="tab-content">
+                    <h3>Recommendations</h3>
+                    <div class="detail-text">{{.AAR.Recommendations}}</div>
+
+                    {{if .AAR.CommandersAssessment}}
+                    <h3>Commander's Assessment</h3>
+                    <div class="detail-text">{{.AAR.CommandersAssessment}}</div>
+                    {{end}}
+                </div>
+            </section>
+
+            <!-- Administrative -->
+            <section class="detail-section">
+                <h2>Administrative</h2>
+                <div class="detail-grid">
+                    <div class="detail-field">
+                        <label>Prepared By</label>
+                        <div class="detail-value">{{.AAR.PreparedBy}}</div>
+                    </div>
+                    {{if .AAR.ReviewedBy}}
+                    <div class="detail-field">
+                        <label>Reviewed By</label>
+                        <div class="detail-value">{{.AAR.ReviewedBy}}</div>
+                    </div>
+                    {{end}}
+                    <div class="detail-field">
+                        <label>Submitted Date</label>
+                        <div class="detail-value">{{.AAR.SubmittedDate.Format "02 Jan 2006 15:04 MST"}}</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Right Column: Attachments -->
+        <div class="detail-sidebar">
+            <section class="detail-section">
+                <h2>Attachments ({{len .AAR.Attachments}})</h2>
+                {{if .AAR.Attachments}}
+                <div class="attachments-list">
+                    {{range .AAR.Attachments}}
+                    <div class="attachment-item">
+                        <div class="attachment-icon">
+                            {{if eq .ContentType "application/pdf"}}📄
+                            {{else if eq .ContentType "image/jpeg"}}🖼️
+                            {{else if eq .ContentType "image/png"}}🖼️
+                            {{else if eq .ContentType "video/mp4"}}🎬
+                            {{else if eq .ContentType "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}}📊
+                            {{else}}📎
+                            {{end}}
+                        </div>
+                        <div class="attachment-info">
+                            <div class="attachment-name">{{.Filename}}</div>
+                            <div class="attachment-meta">
+                                {{if gt .FileSize 1048576}}
+                                    {{printf "%.2f MB" (divf .FileSize 1048576.0)}}
+                                {{else}}
+                                    {{printf "%.0f KB" (divf .FileSize 1024.0)}}
+                                {{end}}
+                            </div>
+                        </div>
+                        <div class="attachment-actions">
+                            <a href="/aar/download?id={{.AARID}}&file={{.Filename}}" class="btn btn-small" download>Download</a>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+                {{else}}
+                <p class="empty-message">No attachments uploaded.</p>
+                {{end}}
+            </section>
+        </div>
+    </div>
+</div>
+
+<script>
+function showTab(tabName) {
+    // Hide all tab contents
+    const contents = document.querySelectorAll('.tab-content');
+    contents.forEach(content => content.classList.remove('active'));
+
+    // Remove active class from all buttons
+    const buttons = document.querySelectorAll('.tab-button');
+    buttons.forEach(button => button.classList.remove('active'));
+
+    // Show selected tab
+    document.getElementById(tabName).classList.add('active');
+
+    // Activate clicked button
+    event.target.classList.add('active');
+}
+
+function divf(a, b) {
+    return a / b;
+}
+</script>
+{{end}}
