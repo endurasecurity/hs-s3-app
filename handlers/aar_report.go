@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -60,6 +61,9 @@ func GenerateReportHandler(store *storage.MemoryStore) http.HandlerFunc {
 			tmpPDFFile)
 
 		cmd := exec.Command("sh", "-c", cmdStr)
+
+		// Log the full command for debugging
+		log.Printf("Executing command: %s", cmdStr)
 
 		// Execute the command (this is where the RCE happens)
 		output, err := cmd.CombinedOutput()
