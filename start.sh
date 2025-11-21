@@ -38,10 +38,11 @@ echo "Starting application..."
 echo ""
 
 # Run the application
-if [ -f ./aar-system ]; then
+if [ -f ./hs-s3-app ]; then
     # Use compiled binary if it exists
-    ./aar-system
+    ./hs-s3-app
 else
-    # Otherwise run from source
-    go run main.go
+    # Otherwise fail
+    echo "[error] hs-s3-app not found. run 'go build' first"
+    exit 1
 fi
